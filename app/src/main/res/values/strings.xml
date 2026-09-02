@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">attendance</string>
+    <string name="app_name">출석하자</string>
+
+    <!-- 공통 -->
+    <string name="loading">로딩 중…</string>
+    <string name="error_network">네트워크 오류가 발생했습니다</string>
+    <string name="error_unknown">알 수 없는 오류가 발생했습니다</string>
+
+    <!-- 로그인 -->
+    <string name="login_title">로그인</string>
+    <string name="username_hint">학번</string>
+    <string name="password_hint">비밀번호</string>
+    <string name="login_button">로그인</string>
+
+    <!-- NFC -->
+    <string name="nfc_scan_title">NFC 출석 인증</string>
+    <string name="nfc_ready">기기를 NFC 태그에 가까이 대주세요.</string>
+    <string name="nfc_already">현재 시간대에 이미 출석이 완료되었습니다.</string>
+
+    <!-- 출석 -->
+    <string name="attendance_success">출석 완료</string>
+    <string name="attendance_late">지각 출석</string>
+    <string name="attendance_fail">출석 실패</string>
 </resources>

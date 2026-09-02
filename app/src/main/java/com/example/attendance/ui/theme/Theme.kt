@@ -1,57 +1,42 @@
 package com.example.attendance.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
+/**
+ * 앱 라이트 컬러 스킴
+ *
+ * Figma 디자인이 라이트 모드 기준으로만 제공되므로
+ * 다크 모드/다이나믹 컬러 대신 브랜드 컬러를 고정으로 사용한다.
+ */
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Blue600,           // 주요 버튼, 강조 요소
+    onPrimary = White,           // primary 위에 올라가는 텍스트
+    secondary = Blue400,         // 보조 버튼 (출석 체크 등)
+    onSecondary = White,
+    background = Gray50,         // 화면 기본 배경
+    onBackground = Gray900,
+    surface = White,             // 카드, 다이얼로그 표면
+    onSurface = Gray900,
+    onSurfaceVariant = Gray500,  // 보조 텍스트
+    outline = Gray400,           // 입력창 테두리
+    outlineVariant = Gray300,    // 카드 테두리
+    error = Red900,
 )
 
+/**
+ * 앱 전체 테마
+ *
+ * MaterialTheme을 감싸서 색상/타이포그래피를 일괄 적용한다.
+ * 모든 화면은 이 테마 안에서 렌더링된다.
+ */
 @Composable
 fun AttendanceTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography,
         content = content
     )
