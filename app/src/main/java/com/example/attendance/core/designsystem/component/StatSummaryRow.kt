@@ -27,7 +27,7 @@ data class StatItem (
  * 홈 화면의 "이번 주 출석 현황'과 내 출석 기록 화면의 "이번 학기 출석 현황'에서 공용으로 사용
  */
 @Composable
-fun StatSymmmaryRow(
+fun StatSummaryRow(
     items: List<StatItem>,
     modifier: Modifier = Modifier
 ) {
