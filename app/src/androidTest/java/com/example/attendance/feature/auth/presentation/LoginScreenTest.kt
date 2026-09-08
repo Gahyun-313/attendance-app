@@ -1,5 +1,6 @@
 package com.example.attendance.feature.auth.presentation
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -66,20 +67,29 @@ class LoginScreenTest {
 
     @Test
     fun 학번과_비밀번호_입력이_각_콜백에_전달된다() {
+        // 실제 화면처럼 입력 결과를 다시 전달하여 포커스 이동 후에도 값을 유지한다.
+        val uiState = mutableStateOf(LoginUiState())
         var studentId = ""
         var password = ""
         composeTestRule.setContent {
             AttendanceTheme {
                 LoginContent(
-                    uiState = LoginUiState(),
-                    onStudentIdChange = { studentId = it },
-                    onPasswordChange = { password = it },
+                    uiState = uiState.value,
+                    onStudentIdChange = {
+                        studentId = it
+                        uiState.value = uiState.value.copy(studentId = it)
+                    },
+                    onPasswordChange = {
+                        password = it
+                        uiState.value = uiState.value.copy(password = it)
+                    },
                     onLoginClick = {}
                 )
             }
         }
         composeTestRule.onNodeWithText("학번").performTextInput("2021000000")
         composeTestRule.onNodeWithText("비밀번호").performTextInput("pw1234")
+        composeTestRule.onNodeWithText("2021000000").assertIsDisplayed()
         composeTestRule.runOnIdle {
             assertThat(studentId).isEqualTo("2021000000")
             assertThat(password).isEqualTo("pw1234")

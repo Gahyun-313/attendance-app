@@ -403,10 +403,14 @@ class LoginScreenTest {
     // 다음 메서드를 독립적인 JUnit 테스트로 등록한다.
     @Test
     /**
-     * 책임: 학번과 비밀번호 입력이 각 콜백에 전달된다 조건을 검증한다. 흐름: 테스트 상태/응답 준비 → 이벤트 또는 UI 조작 → 기대 상태·호출·표시 단언. 실패하면 해당 계약이 깨졌음을 알린다.
+     * 책임: 두 입력의 콜백 전달과 포커스 이동 후 학번 유지를 검증한다.
+     * 흐름: 관찰 가능한 상태 준비 → 입력 콜백 기록 및 상태 갱신 → 재구성 → 다음 입력 → 표시와 콜백 값 검증.
+     * ViewModel 대신 테스트가 상태 소유자가 되어 Content에 최신 값을 다시 전달한다.
      */
     // 학번과_비밀번호_입력이_각_콜백에_전달된다 메서드를 선언한다. 인자에 따른 처리 또는 검증은 아래 본문에서 수행한다.
     fun 학번과_비밀번호_입력이_각_콜백에_전달된다() {
+        // Compose가 변경을 관찰할 상태를 테스트 범위에 만든다. val은 상태 객체의 참조를 고정하며 value는 갱신할 수 있다.
+        val uiState = mutableStateOf(LoginUiState())
         // 학번 변경 콜백으로 받은 문자열을 기록할 변수를 준비한다.
         var studentId = ""
         // 비밀번호 변경 콜백으로 받은 문자열을 기록할 변수를 준비한다.
@@ -417,12 +421,24 @@ class LoginScreenTest {
             AttendanceTheme {
                 // 순수 표시를 담당하는 Content를 호출한다. 아래 인자로 상태와 이벤트 콜백을 전달한다.
                 LoginContent(
-                    // 기본값으로 초기 상태를 만들어 주입한다. 이 코드 자체는 서버를 호출하지 않는다.
-                    uiState = LoginUiState(),
-                    // 콜백 인자 it을 기록한다. 이 테스트는 상태 재구성 대신 이벤트 전달 계약을 검사한다.
-                    onStudentIdChange = { studentId = it },
-                    // 비밀번호 콜백이 받은 원문 문자열을 기록한다.
-                    onPasswordChange = { password = it },
+                    // 관찰 가능한 상태의 최신 값을 읽어 전달한다. value 변경 시 이를 읽은 UI가 재구성된다.
+                    uiState = uiState.value,
+                    // 학번 입력 콜백을 연다. it은 새 전체 학번 문자열이다.
+                    onStudentIdChange = {
+                        // 콜백이 실제로 전달한 값을 별도로 기록하여 마지막에 검증한다.
+                        studentId = it
+                        // 비밀번호 등 다른 필드는 유지하면서 학번을 교체한다. 새 상태를 UI에 돌려주는 상태 끌어올리기 흐름이다.
+                        uiState.value = uiState.value.copy(studentId = it)
+                    // 학번 콜백을 닫고 다음 인자로 구분한다.
+                    },
+                    // 비밀번호 입력 콜백을 연다. it은 화면에서 가려지기 전 원문이다.
+                    onPasswordChange = {
+                        // 비밀번호 콜백이 받은 값을 별도로 기록한다.
+                        password = it
+                        // 학번을 유지한 복사본으로 비밀번호를 갱신하여 Content에 최신 입력값을 다시 전달한다.
+                        uiState.value = uiState.value.copy(password = it)
+                    // 비밀번호 콜백을 닫고 다음 인자로 구분한다.
+                    },
                     // 로그인 클릭에 부수효과가 없는 빈 람다를 전달한다.
                     onLoginClick = {}
                 // 앞에서 시작한 인자 목록 또는 주 생성자의 소괄호를 닫는다.
@@ -435,6 +451,8 @@ class LoginScreenTest {
         composeTestRule.onNodeWithText("학번").performTextInput("2021000000")
         // 텍스트 의미 정보를 가진 UI 노드를 찾는다. 입력을 수행하여 onValueChange 콜백을 발생시킨다.
         composeTestRule.onNodeWithText("비밀번호").performTextInput("pw1234")
+        // 비밀번호 입력창으로 포커스를 옮긴 뒤에도 학번이 화면에 남아 있는지 확인한다.
+        composeTestRule.onNodeWithText("2021000000").assertIsDisplayed()
         // Compose 작업이 안정된 시점의 UI 스레드에서 다음 검증을 실행한다.
         composeTestRule.runOnIdle {
             // Truth로 studentId).isEqualTo("2021000000") 식을 검증한다. isTrue/isFalse는 Boolean, isNull/isNotNull은 null 여부, isEqualTo는 값 일치를 확인한다.
