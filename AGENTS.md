@@ -1,4 +1,20 @@
-# 프로젝트 작업 지침
+# attendance-app 작업 지침
+
+## 저장소와 현재 학습 단계
+
+- 실제 구현 저장소는 현재 디렉터리 `D:\Dev\attendance-app`이다.
+- `D:\Dev\attendance-app-claude`는 실제 앱이 아니라 단계별 가이드·후속 아키텍처 참고 저장소다.
+- 두 저장소를 함께 확인해야 할 때도 실제 코드·테스트·기능 문서의 기준은 항상 `attendance-app`이다.
+- 새 세션에서는 먼저 현재 경로, 브랜치, `git status`, 최신 커밋을 확인하고 이 문서와 대상 기능 문서를 읽는다.
+- 현재 실제 앱의 단계별 완료 기준은 3-5 알림까지이며, 다음 구현 단계는 3-6 내 출석 기록이다. 3-6 이후에는 Navigation 연결, 정정 요청, 마이페이지 등의 후속 작업이 남아 있다.
+
+## 새 세션 작업 시작 순서
+
+1. `pwd`, `git status --short --branch`, `git log -5 --oneline`으로 실제 체크아웃과 변경 상태를 확인한다.
+2. 사용자가 지정한 기능의 `feature/<기능>/` 문서와 실제 Kotlin 소스를 함께 읽는다.
+3. 형제 참고 저장소의 `LEARNING_GUIDE.md`는 의도·학습 순서 확인에만 사용하고, 현재 앱의 패키지·DI·테스트 구조를 우선한다.
+4. 작업 전 이해한 내용, 현재 브랜치, 수정 파일, 커밋 범위를 설명한다.
+5. 사용자가 작업을 요청하면 기존 사용자 변경을 보존한 채 구현한다. 브랜치 생성·전환과 push는 수행하지 않는다.
 
 ## 작업 전 확인
 
@@ -6,6 +22,13 @@
 - 실제 구현 대상은 이 저장소 `attendance-app`이다. 별도 `attendance-app-claude/LEARNING_GUIDE.md`는 학습 단계 참고 자료다. 두 저장소를 혼동하지 않는다.
 - 수정 전에 현재 경로·브랜치·Git 변경 상태와 대상 파일을 확인한다. 기존 사용자 변경을 덮어쓰지 않고 이어서 작업한다.
 - 브랜치 생성·전환과 푸시는 사용자가 직접 한다. 명시적으로 별도 요청하기 전에는 수행하지 않는다.
+
+## 현재 구현 경계
+
+- 현재 앱은 수동 DI(`core/di/AppContainer.kt`)와 Fake Repository를 사용한다. `attendance-app-claude`의 Hilt·`AppResult`·`SessionRepository` 참고 구현을 현재 코드에 임의로 가져오지 않는다.
+- `MainActivity`는 아직 `HomePrototypeScreen`을 표시하며, 실제 Navigation 연결이 완료되었다고 표현하지 않는다.
+- 서버 인증·출석 NFC·알림 API·영구 저장은 미연동이다. Fake 지연과 샘플 데이터는 실제 서버 동작으로 설명하지 않는다.
+- 기능 문서의 `VALIDATION.md`는 테스트 작성·실행·APK 빌드·기기 실행을 구분한다. 과거 실행 결과를 이번 변경의 통과 결과로 재사용하지 않는다.
 
 ## 코드와 학습 문서
 
@@ -31,3 +54,18 @@
 - 학습 가이드의 단계별 작업은 가이드에 있는 파일별 커밋 메시지와 묶음을 따른다.
 - 설명 Markdown은 `docs(기능): ...` 형식의 적절한 메시지로 별도 커밋할 수 있다.
 - 커밋 전에 대상 파일을 명시적으로 스테이징하고 diff를 확인한다. 완료 후 커밋 내역과 남은 변경을 확인하여 알린다.
+
+## 문서·커밋 규칙
+
+- 기능 문서는 `README.md`, 상태 해설, UI 해설, 테스트 해설, `VALIDATION.md`를 기본 세트로 유지한다.
+- 설명 문서의 코드 블록은 실제 소스와 동작·호출 순서를 맞추고, import는 생략해도 되지만 나머지 줄은 이해 가능한 설명 주석을 붙인다.
+- 문서만 변경하는 경우 `docs(<기능>): ...` 메시지를 사용한다. 기능 소스·테스트를 함께 커밋할 때는 가이드의 기능 메시지를 따른다.
+- 사용자가 “파일별 커밋”을 요청하면 한 커밋에 여러 문서 파일을 넣지 않는다. 각 커밋 전에 `git add -- <정확한 파일>`, `git diff --cached --check`, `git diff --cached --stat`을 확인한다.
+- 현재 작업과 무관한 미커밋 파일은 절대 일괄 스테이징하거나 커밋하지 않는다.
+
+## 이번 단계 참고 파일
+
+- 3-6 실제 코드: `app/src/main/java/com/example/attendance/feature/history/`
+- 3-6 테스트: `app/src/test/java/com/example/attendance/feature/history/`, `app/src/androidTest/java/com/example/attendance/feature/history/`
+- 3-6 문서: 같은 feature 디렉터리의 `README.md`, `HISTORY_STATE_NOTES.md`, `HISTORY_UI_NOTES.md`, `HISTORY_TEST_NOTES.md`, `VALIDATION.md`
+- 전체 단계 참고: `D:\Dev\attendance-app-claude\IMPLEMENTATION_STATUS.md`, `LEARNING_GUIDE.md`
