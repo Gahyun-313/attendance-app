@@ -76,4 +76,11 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // JVM에서 가상 시간, Flow 방출, 상태 단언, Repository 호출을 검증한다.
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.truth)
+    testImplementation(libs.mockk)
+    // androidTest는 JVM 단위 테스트와 의존성 구성이 분리되어 있다.
+    androidTestImplementation(libs.truth)
 }
