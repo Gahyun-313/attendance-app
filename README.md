@@ -10,6 +10,8 @@
 
 > 🚧 **개발 진행 중입니다.** 현재는 Fake Repository와 샘플 데이터로 동작하며, 서버 인증·실제 NFC 태그 수신·영구 저장은 연결되지 않았습니다. 문서의 구현 범위는 마이페이지 기본 UI와 Navigation 연결까지이며, 마이페이지 ViewModel 연습 과제는 포함하지 않습니다.
 
+<br>
+
 ## 🖼️ 주요 화면
 
 | 로그인 | 홈 | 출석 체크 |
@@ -31,6 +33,8 @@
 | --- |
 |  |
 | 앱 시작 화면 |
+
+<br>
 
 ## 📖 서비스 소개
 
@@ -74,6 +78,8 @@
 
 </details>
 
+<br>
+
 ## 📌 프로젝트 정보
 
 | 항목 | 내용 |
@@ -85,6 +91,8 @@
 | 데이터 | Fake Repository와 메모리 내 샘플 데이터 |
 | 검증 구성 | JVM 단위 테스트, Compose UI 테스트 |
 | 진행 상태 | 개발 중; 서버·NFC 하드웨어·영구 저장 미연동 |
+
+<br>
 
 ## 👨‍💻 구현 범위
 
@@ -99,6 +107,8 @@
 - 기능별 ViewModel·UI 테스트와 구현 해설 문서
 
 마이페이지의 `MyPageViewModel`, `AuthRepository.logout()` 호출 연결, `MyPageViewModelTest`는 구현 중입니다.
+
+<br>
 
 ## 🛠️ Tech Stack
 
@@ -116,6 +126,8 @@
 | Build | Gradle, Android Gradle Plugin |
 
 Retrofit·Gson 의존성은 포함되어 있으나 현재 화면 데이터를 가져오는 서버 API 연동에는 사용하지 않습니다.
+
+<br>
 
 ## ✨ 주요 구현
 
@@ -149,6 +161,8 @@ Navigation에서 전달한 `recordId`를 `SavedStateHandle`로 받아 정정 대
 
 [테스트 구성과 실행 방법 보기](./docs/TESTING.md)
 
+<br>
+
 ## 🔧 설계 포인트
 
 | 주제 | 적용 내용 |
@@ -161,6 +175,8 @@ Navigation에서 전달한 `recordId`를 `SavedStateHandle`로 받아 정정 대
 | 구현 범위 구분 | Fake 성공 응답과 실제 서버 반영을 문서에서 구분 |
 
 [설계 배경과 현재 제한 사항 보기](./docs/IMPLEMENTATION_NOTES.md)
+
+<br>
 
 ## ⚠️ 현재 한계
 
@@ -175,6 +191,8 @@ Navigation에서 전달한 `recordId`를 `SavedStateHandle`로 받아 정정 대
 | 마이페이지 | 정적 UI; 프로필 조회·수정 및 실제 세션 삭제 미구현 |
 | 저장·배포 | 영구 저장과 배포용 Release 설정 미완료 |
 
+<br>
+
 ## 🗓️ 이후 작업 계획
 
 - [ ] 마이페이지 ViewModel과 로그아웃 Repository 호출·단위 테스트
@@ -184,6 +202,8 @@ Navigation에서 전달한 `recordId`를 `SavedStateHandle`로 받아 정정 대
 - [ ] 연월별 기록 조회, 출석·정정 요청 이후 데이터 갱신
 - [ ] 오류·빈 상태 UI 보강
 - [ ] Release 빌드와 배포 설정 정리
+
+<br>
 
 ## 📚 Documentation
 
