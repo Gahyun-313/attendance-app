@@ -8,6 +8,8 @@
 // ViewModel을 생성하고 최신 상태를 생명주기와 함께 수집한다.
 @Composable
 fun AttendanceHistoryScreen(
+    // 행에서 올라온 ID의 실제 이동은 AppNavGraph에 위임한다.
+    onRequestCorrection: (Long) -> Unit = {},
     // 수동 DI Factory를 사용해 Activity의 AppContainer에서 Repository를 전달받는다.
     viewModel: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory)
 ) {
@@ -18,14 +20,18 @@ fun AttendanceHistoryScreen(
         uiState = uiState,
         onPrevMonth = viewModel::moveToPreviousMonth,
         onNextMonth = viewModel::moveToNextMonth,
-        onDayClick = viewModel::selectDay
+        onDayClick = viewModel::selectDay,
+        // 자체 Scaffold가 없는 Screen에 상태바 여백을 적용한다.
+        modifier = Modifier.statusBarsPadding(),
+        // 정정 이동 콜백을 Content까지 전달한다.
+        onRequestCorrection = onRequestCorrection
     )
 }
 ```
 
 ## Content
 
-`HistoryContent`는 제목 → 통계 카드 → 달력 → 날짜별 기록 순서로 그린다. `uiState.records`를 반복해 `HistoryRecordRow`를 호출하며, 정정 요청 화면 연결은 Navigation 단계의 책임이므로 현재는 행 표시와 상태만 담당한다.
+`HistoryContent`는 제목 → 통계 카드 → 달력 → 날짜별 기록 순서로 그린다. `uiState.records`를 반복해 `HistoryRecordRow`를 호출하며, 정정 버튼의 ID를 외부 콜백으로 전달하고 실제 이동은 3-9 AppNavGraph가 담당한다. 변경 코드 전체는 HISTORY_NAVIGATION_NOTES.md를 참고한다.
 
 ```kotlin
 // 외부 상태와 콜백만 받아 Preview와 UI 테스트에서 직접 호출할 수 있다.
@@ -35,7 +41,9 @@ fun HistoryContent(
     onPrevMonth: () -> Unit,
     onNextMonth: () -> Unit,
     onDayClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    // 정정 버튼에서 클릭한 행의 Long ID를 전달한다.
+    onRequestCorrection: (Long) -> Unit = {}
 ) {
     // 긴 기록 목록을 세로로 스크롤할 수 있는 화면 열을 만든다.
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -46,7 +54,7 @@ fun HistoryContent(
         // 현재 연월과 날짜 선택 상태를 달력에 전달한다.
         MonthCalendar(uiState.currentMonth, uiState.selectedDay, uiState.recordDays, onPrevMonth, onNextMonth, onDayClick)
         // 선택 결과로 만들어진 기록 목록을 표시한다.
-        uiState.records.forEach { record -> HistoryRecordRow(record = record) }
+        uiState.records.forEach { record -> HistoryRecordRow(record = record, onRequestCorrection = { onRequestCorrection(record.id) }) }
     }
 }
 ```
