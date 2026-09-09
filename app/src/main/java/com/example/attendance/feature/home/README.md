@@ -14,8 +14,8 @@
 
 ## 현재 구현과 가이드의 차이
 
-- `HomePrototypeScreen`은 STEP 2-1의 정적 UI로 보존했다. 새 `HomeScreen`은 ViewModel을 수집하는 화면이다. `MainActivity`는 아직 프로토타입을 호출한다. 일반 앱 실행만으로 새 HomeScreen이 검증되지는 않는다.
-- 가이드 예시의 `BottomNavigationBar`, `ScreenRoute`, Navigation 그래프는 현재 저장소에 없다. 따라서 새 HomeScreen은 `onCheckAttendance`, `onMoreNotifications`, `onMoreRecords`를 인자로 받는다. 실제 이동과 하단 탭 연결은 후속 Navigation 단계의 호출자가 담당한다.
+- `HomePrototypeScreen`은 STEP 2-1의 정적 UI로 보존했다. 새 `HomeScreen`은 ViewModel을 수집하는 화면이다. `MainActivity`는 이제 AppNavGraph를 호스팅하며 로그인 성공 후 새 HomeScreen을 표시한다. 이번 연결의 실행 검증은 별도로 필요하다.
+- 3-9에서 `BottomNavigationBar`, `ScreenRoute`, AppNavGraph를 추가했다. 새 HomeScreen은 `onCheckAttendance`, `onMoreNotifications`, `onMoreRecords`를 인자로 받는다. 실제 이동과 하단 탭 연결은 AppNavGraph가 담당한다.
 - 테스트는 가이드의 첫 `awaitItem()`을 곧바로 Repository 결과라고 가정하지 않는다. `stateIn`이 가진 빈 초기 상태를 먼저 확인하고, `runCurrent()`로 수집을 진행한 뒤 결합 결과를 검사한다.
 - 초기 데이터 검증뿐 아니라 알림 읽음 처리, 통계·세션·기록 변경, 빈 목록, UI 콜백도 확인하는 테스트 코드를 작성했다. 이번 작업에서 테스트·빌드는 실행하지 않았다.
 
@@ -140,7 +140,7 @@ UI 테스트는 화면 밖의 버튼·제목을 `performScrollTo()`로 보이게
 
 ## 현재 한계
 
-- API·영구 저장·자동 갱신 출석 데이터·실제 Navigation은 미구현이다.
+- API·영구 저장·자동 갱신 출석 데이터는 미구현이다. Navigation은 3-9에서 연결했으며 실행 결과는 별도로 확인한다.
 - 빈 초기 상태와 실제 빈 데이터 상태를 별도 로딩 플래그로 구분하지 않는다. 가이드의 범위에 맞춘 상태다.
 - upstream 예외를 사용자 오류 상태로 변환하는 로직은 없다. 실제 네트워크 연결 시 오류 모델·재시도 정책이 필요하다.
 - Column은 모든 행을 구성한다. 현재 샘플 목록 규모에 맞췄으며 대량 목록에 대한 LazyColumn 최적화는 하지 않았다.
