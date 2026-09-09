@@ -30,7 +30,7 @@ import com.example.attendance.ui.theme.Gray50
  * 홈 화면 (Stateful)
  *
  * ViewModel 상태를 구독하고 화면 이동 요청을 호출자가 제공한 콜백으로 전달한다.
- * Navigation 연결은 후속 단계에서 담당한다.
+ * AppNavGraph가 이동 콜백을 제공하며 하단 탭은 그래프에서 관리한다.
  * 실제 UI는 [HomeContent]가 그린다.
  */
 @Composable
