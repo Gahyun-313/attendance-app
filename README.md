@@ -36,7 +36,14 @@
 
 출석하자는 사용자가 수업별 출석 상태를 확인하고 출석 체크부터 기록 조회, 정정 요청까지 하나의 앱에서 진행할 수 있도록 설계한 프로젝트입니다.
 
-현재는 서버 없이 화면과 데이터 흐름을 확인할 수 있는 단계입니다. Repository 인터페이스와 Fake 구현을 분리해 UI 상태와 테스트를 구성하고, 이후 실제 데이터 소스로 확장할 기반을 정리했습니다.
+Android 앱과 함께 백엔드 API 및 웹 프로젝트를 개발하고 있으며, 각 구성 요소를 연동해 출석 관리 서비스를 구현하는 것을 목표로 합니다.
+
+현재 Android 앱은 서버 연동 전 단계로, Fake Repository와 샘플 데이터를 사용해 화면과 데이터 흐름을 확인할 수 있습니다. Repository 인터페이스와 Fake 구현을 분리해 UI 상태와 테스트를 구성하고, 이후 실제 서버 데이터를 연결할 기반을 정리했습니다.
+
+| 관련 프로젝트 | 저장소 |
+| --- | --- |
+| Backend | [attendance-be](https://github.com/Gahyun-313/attendance-be) |
+| Web | [attendance-web-claude](https://github.com/Gahyun-313/attendance-web-claude) |
 
 ## 📌 프로젝트 정보
 
@@ -62,7 +69,7 @@
 - 마이페이지 기본 UI와 로그아웃 화면 이동
 - 기능별 ViewModel·UI 테스트와 구현 해설 문서
 
-마이페이지의 `MyPageViewModel`, `AuthRepository.logout()` 호출 연결, `MyPageViewModelTest`는 후속 연습 과제로 남아 있습니다.
+마이페이지의 `MyPageViewModel`, `AuthRepository.logout()` 호출 연결, `MyPageViewModelTest`는 구현 중입니다.
 
 ## 🛠️ Tech Stack
 
