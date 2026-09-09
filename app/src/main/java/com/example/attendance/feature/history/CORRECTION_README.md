@@ -18,7 +18,7 @@ Repository와 AppContainer 경로는 앱 패키지 `com/example/attendance/` 기
 ## 파일 간 호출과 상태 전달
 
 ```text
-[후속 3-9 연결] route recordId(Long)
+[3-9 연결] route recordId(Long)
                     ↓ 같은 키 "recordId"
 CreationExtras → createSavedStateHandle() ─┐
 테스트의 SavedStateHandle(mapOf(...)) ────┤
@@ -46,7 +46,7 @@ CorrectionRequestScreen.collectAsStateWithLifecycle()
                               → false/예외: 오류 + 재시도 가능
                                       ↓ 상태 구독
                      Screen.LaunchedEffect → onSubmitted
-                     [실제 popBackStack은 후속 연결]
+                     [AppNavGraph가 popBackStack으로 복귀]
 ```
 
 ## 상태 규칙과 실패 처리
@@ -66,7 +66,7 @@ SavedStateHandle은 ViewModel 소유자의 저장 상태와 기본 인자에 접
 
 Factory의 initializer는 CreationExtras에서 Application을 얻고 createSavedStateHandle()로 handle을 만든다. AppContainer의 Repository를 생성자로 전달하므로 ViewModel 자체는 Context나 NavController를 요구하지 않는다. 테스트에서는 handle과 Repository를 직접 만들어 주입할 수 있다.
 
-Navigation 그래프가 아직 없으므로 ARG_RECORD_ID는 CorrectionViewModel에 둔다. 3-9에서 동일 키와 NavType.LongType으로 인자를 선언하고 해당 NavBackStackEntry를 ViewModel 소유자로 사용해야 한다. 인자 없는 Activity에서 기본 Factory를 호출하는 것만으로 특정 기록 ID가 생기지는 않는다.
+3-9의 ScreenRoute는 기존 CorrectionViewModel.ARG_RECORD_ID를 재사용한다. NavType.LongType으로 인자를 선언하고 해당 NavBackStackEntry를 ViewModel 소유자로 사용한다. 인자 없는 Activity에서 기본 Factory를 호출하는 것만으로 특정 기록 ID가 생기지는 않는다.
 
 ### StateFlow, copy, update, suspend
 
@@ -78,17 +78,17 @@ suspend는 함수가 대기 중 스레드를 점유하지 않고 중단·재개�
 
 Screen은 ViewModel의 상태를 생명주기에 맞춰 수집하고 Content에 전달한다. Content는 상태와 콜백만 받아 UI를 그리는 state hoisting 구조다. 입력 필드의 onValueChange는 값 변경 요청이며 실제 화면 값을 바꾸려면 상태 소유자가 새 값을 돌려줘야 한다.
 
-LaunchedEffect는 키가 바뀌거나 Composition에 새로 진입할 때 실행된다. isSubmitted=true의 단순 재구성에서는 완료 콜백을 반복하지 않지만, 같은 성공 ViewModel을 유지한 채 Composition에 재진입하면 다시 호출될 수 있다. 현재는 성공 후 화면을 제거하는 후속 Navigation 연결을 전제로 하며 영구적인 일회성 이벤트 소비 보장을 구현한 것은 아니다. rememberUpdatedState는 effect를 재시작하지 않고 최신 콜백을 사용하게 한다.
+LaunchedEffect는 키가 바뀌거나 Composition에 새로 진입할 때 실행된다. isSubmitted=true의 단순 재구성에서는 완료 콜백을 반복하지 않지만, 같은 성공 ViewModel을 유지한 채 Composition에 재진입하면 다시 호출될 수 있다. 현재는 성공 후 화면을 제거하는 AppNavGraph의 popBackStack 연결을 사용하며 영구적인 일회성 이벤트 소비 보장을 구현한 것은 아니다. rememberUpdatedState는 effect를 재시작하지 않고 최신 콜백을 사용하게 한다.
 
 ### 테스트 구조
 
 StandardTestDispatcher는 launch를 즉시 진행하지 않아 코루틴 시작 전에 제출 상태가 잠기는지 검증하기 좋다. advanceUntilIdle은 같은 테스트 스케줄러에 예약된 작업과 delay를 가상 시간으로 처리한다. 지연이 있는 Fake의 성공을 submit 직후 곧바로 단언하지 않는다.
 
-테스트 Repository는 AttendanceRepository by FakeAttendanceRepository()로 무관한 계약을 위임하고 getRecord·requestCorrection만 재정의한다. UI 테스트는 mutableStateOf로 입력을 되돌려주며, 작은 기기에서는 performScrollTo 후 하단 버튼을 누른다. 단위 테스트는 로직을, UI 테스트는 Content의 표시·입력 연결을 검증한다. Navigation과 Factory의 실제 복원 통합 테스트는 이번 범위가 아니다.
+테스트 Repository는 AttendanceRepository by FakeAttendanceRepository()로 무관한 계약을 위임하고 getRecord·requestCorrection만 재정의한다. UI 테스트는 mutableStateOf로 입력을 되돌려주며, 작은 기기에서는 performScrollTo 후 하단 버튼을 누른다. 단위 테스트는 로직을, UI 테스트는 Content의 표시·입력 연결을 검증한다. 3-7 테스트는 Content와 ViewModel에 한정된다. 3-9에서 AppNavGraphTest로 인자·Factory·성공 복귀 연결 검증을 추가했으며 프로세스 복원은 별도 범위다.
 
 ## 가이드와의 차이 및 구현 한계
 
-- 아직 없는 ScreenRoute와 NavController 대신 기능 내 인자 키와 이동 콜백을 사용한다. MainActivity는 HomePrototypeScreen을 유지하며 기록 화면의 정정 이동도 연결하지 않았다.
+- 기능 내 인자 키와 이동 콜백을 유지하고 3-9의 AppNavGraph에서 실제 화면 이동에 연결했다. 기록 화면에서 ID를 전달하고 정정 성공·취소 후 기록으로 복귀한다.
 - 조회 상태·없는 ID·요청 실패 표시를 보완하고, launch 이전 잠금으로 중복 제출을 막았다.
 - AttendanceRecord는 dayOfMonth만 제공하므로 가이드의 고정 연월·수업 시간을 표시하지 않는다.
 - 파일 선택 버튼은 가이드의 배치용 자리이며 실제 피커·증빙 업로드는 없다. 화면에 준비 중이라고 표시한다.

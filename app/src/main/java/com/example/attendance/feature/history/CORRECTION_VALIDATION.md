@@ -32,7 +32,7 @@ adb가 PATH에 없다면 Android SDK의 platform-tools/adb.exe를 사용한다. 
 | --- | --- |
 | JVM 9건 | Long 인자 조회·로딩, 인자 누락, 없는 기록, 공백 사유 차단·해제·인자 전달·성공, 중복 방지·입력 스냅샷, false 후 재시도, 조회 예외, 제출 예외, 취소 처리 |
 | UI 6건 | 제출 콜백, 제출 중 비활성, 사유·상세 입력, 오류 표시, 대상 부재 제출 차단, 취소 콜백 |
-| 후속 확인 | Navigation 인자 전달·뒤로 이동·완료 후 복귀, 프로세스 복원 통합 |
+| 후속 확인 | 3-9에서 인자·완료 복귀 테스트 작성, 실행 대기. 프로세스 복원 통합은 별도 확인 |
 
 ## 보고서와 APK
 
@@ -45,7 +45,7 @@ adb가 PATH에 없다면 Android SDK의 platform-tools/adb.exe를 사용한다. 
 
 ## Preview와 수동 확인
 
-CorrectionRequestScreen.kt의 CorrectionContentPreview를 Android Studio에서 열어 대상 카드·사유·상세·파일 영역·버튼 배치를 확인한다. 작은 화면의 스크롤, 사유 공백 오류, 실패 문구는 UI 테스트 또는 상태를 주입한 Preview에서 확인한다. MainActivity가 아직 홈 초안을 표시하므로 앱을 설치하는 것만으로 정정 화면에 접근할 수는 없다. 실제 화면 전환 검증은 3-9 연결 후 수행한다.
+CorrectionRequestScreen.kt의 CorrectionContentPreview를 Android Studio에서 열어 대상 카드·사유·상세·파일 영역·버튼 배치를 확인한다. 작은 화면의 스크롤, 사유 공백 오류, 실패 문구는 UI 테스트 또는 상태를 주입한 Preview에서 확인한다. 3-9 연결 후에는 앱에서 로그인 → 기록 탭 → 정정 요청으로 진입할 수 있다. 이번 Navigation 변경의 빌드·실행은 별도 검증 대상이며 ../navigation/VALIDATION.md를 따른다.
 
 ## 가이드의 커밋 메시지
 

@@ -43,4 +43,4 @@ Repository 데이터는 서버가 아니라 현재 `FakeAttendanceRepository`의
 
 ## 출석 정정 요청 (3-7)
 
-기록 조회·필수 사유 검증·접수 상태는 [정정 요청 개요](CORRECTION_README.md)를 참고한다. [상태 해설](CORRECTION_STATE_NOTES.md), [UI 해설](CORRECTION_UI_NOTES.md), [테스트 해설](CORRECTION_TEST_NOTES.md), [실행 안내](CORRECTION_VALIDATION.md)를 함께 제공한다. Navigation과 실제 서버·첨부 업로드는 후속 범위다.
+기록 조회·필수 사유 검증·접수 상태는 [정정 요청 개요](CORRECTION_README.md)를 참고한다. [상태 해설](CORRECTION_STATE_NOTES.md), [UI 해설](CORRECTION_UI_NOTES.md), [테스트 해설](CORRECTION_TEST_NOTES.md), [실행 안내](CORRECTION_VALIDATION.md)를 함께 제공한다. Navigation 연결은 3-9에서 추가했다. 실제 서버·첨부 업로드는 후속 범위다. [기록 이동 해설](HISTORY_NAVIGATION_NOTES.md)을 함께 읽는다.

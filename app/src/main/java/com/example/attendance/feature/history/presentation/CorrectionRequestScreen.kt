@@ -46,7 +46,7 @@ import com.example.attendance.ui.theme.White
 
 /**
  * 상태를 수집하고 입력·제출 이벤트를 ViewModel에 전달한다.
- * Navigation 연결 전이므로 뒤로 이동과 접수 완료의 처리는 호출자에게 위임한다.
+ * 뒤로 이동과 접수 완료의 처리는 AppNavGraph가 제공한 콜백에 위임한다.
  */
 @Composable
 fun CorrectionRequestScreen(

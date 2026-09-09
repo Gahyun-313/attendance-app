@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -55,6 +56,7 @@ import java.time.YearMonth
 /** ViewModel 상태를 수집하고 실제 UI는 [HistoryContent]에 위임한다. */
 @Composable
 fun AttendanceHistoryScreen(
+    onRequestCorrection: (Long) -> Unit = {},
     viewModel: HistoryViewModel = viewModel(factory = HistoryViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -62,7 +64,9 @@ fun AttendanceHistoryScreen(
         uiState = uiState,
         onPrevMonth = viewModel::moveToPreviousMonth,
         onNextMonth = viewModel::moveToNextMonth,
-        onDayClick = viewModel::selectDay
+        onDayClick = viewModel::selectDay,
+        modifier = Modifier.statusBarsPadding(),
+        onRequestCorrection = onRequestCorrection
     )
 }
 
@@ -73,7 +77,8 @@ fun HistoryContent(
     onPrevMonth: () -> Unit,
     onNextMonth: () -> Unit,
     onDayClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRequestCorrection: (Long) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -110,7 +115,13 @@ fun HistoryContent(
         SectionHeader(title = "날짜별 기록")
         Spacer(Modifier.height(10.dp))
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            uiState.records.forEach { record -> HistoryRecordRow(record = record) }
+            // 행의 ID를 전달하고 실제 이동 목적지는 AppNavGraph에서 결정한다.
+            uiState.records.forEach { record ->
+                HistoryRecordRow(
+                    record = record,
+                    onRequestCorrection = { onRequestCorrection(record.id) }
+                )
+            }
         }
     }
 }

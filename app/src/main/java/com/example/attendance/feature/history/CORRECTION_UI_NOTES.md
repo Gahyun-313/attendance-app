@@ -9,13 +9,13 @@ StateFlow → collectAsStateWithLifecycle → CorrectionContent → 입력·제�
 ```kotlin
 /**
  * 상태를 수집하고 입력·제출 이벤트를 ViewModel에 전달한다.
- * Navigation 연결 전이므로 뒤로 이동과 접수 완료의 처리는 호출자에게 위임한다.
+ * 뒤로 이동과 접수 완료의 처리는 AppNavGraph가 제공한 콜백에 위임한다.
  */
 // Compose가 UI 구성 함수로 처리하도록 선언한다.
 @Composable
 // 상태를 소유한 ViewModel과 화면 콘텐츠를 연결하는 Stateful Screen이다.
 fun CorrectionRequestScreen(
-    // 뒤로가기 및 취소 동작이다. 후속 Navigation에서 popBackStack을 연결한다.
+    // 뒤로가기 및 취소 동작이다. AppNavGraph가 popBackStack을 연결한다.
     onBack: () -> Unit,
     // 접수 성공 후 호출할 동작이며 이 화면이 이동 목적지를 정하지 않는다.
     onSubmitted: () -> Unit,
@@ -38,7 +38,7 @@ fun CorrectionRequestScreen(
     }
     // false에서 true로 바뀌면 성공 처리를 실행한다.
     LaunchedEffect(uiState.isSubmitted) {
-        // 실제 화면 이동은 외부 콜백이 담당한다. 화면 재진입 정책은 Navigation 연결 시 정한다.
+        // 실제 화면 이동은 외부 콜백이 담당한다. 성공한 목적지는 AppNavGraph에서 popBackStack으로 제거한다.
         if (uiState.isSubmitted) currentOnSubmitted()
     // 현재 함수·클래스 또는 람다의 실행 범위를 닫고 바깥 범위로 돌아간다.
     }

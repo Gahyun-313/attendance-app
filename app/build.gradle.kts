@@ -61,6 +61,8 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    // 실제 그래프의 목적지·백스택·SavedStateHandle 연결을 UI 테스트에서 확인한다.
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
 
     // (선택) 추후 서버 연동을 대비한 의존성 — 지금 단계에서는 미사용
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

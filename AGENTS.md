@@ -50,15 +50,15 @@
 
 ## 4. 현재 구현 경계와 재확인 지점
 
-다음은 2026-09-09 실제 앱의 `develop`, HEAD `8bb8a0d`에서 확인한 스냅샷이다. 새 세션의 브랜치나 최신 상태를 고정하는 지시가 아니며 작업 전 재확인한다.
+다음은 2026-09-09 실제 앱의 `feat/screen-navigation-graph` 작업 트리 기준이다. 3-7까지의 기존 구현 위에 3-8 기본 UI·3-9 연결을 추가했으며 사용자가 이번 빌드·전체 JVM·전체 UI 테스트 통과를 확인했다. 새 세션의 브랜치나 최신 상태를 고정하는 지시가 아니며 작업 전 재확인한다.
 
 - 2-1 홈 초안, 2-2 데이터·수동 DI, 3-1 스플래시, 3-2 로그인, 3-3 홈, 3-4 출석 체크, 3-5 알림, 3-6 내 출석 기록의 구현이 있다. 3-7 출석 정정 요청을 추가했으며, 단위 9건·UI 6건에 대해 2026-09-09 사용자가 전체 테스트 통과를 확인했다. 에이전트가 직접 재실행한 결과는 아니다. 상세 문서는 feature/history/CORRECTION_README.md와 CORRECTION_VALIDATION.md를 읽는다. 구현·테스트 코드의 존재와 실행 검증 완료는 별개다.
-- 진입점은 `app/src/main/java/com/example/attendance/MainActivity.kt`이며 아직 `HomePrototypeScreen`을 표시한다. 개별 화면 구현을 앱의 Navigation 연결 완료로 표현하지 않는다.
+- 진입점은 `app/src/main/java/com/example/attendance/MainActivity.kt`이며 3-9에서 AppNavGraph를 호스팅하도록 전환했다. 연결 코드는 작성했으나 이번 변경의 빌드·전체 JVM·전체 UI 테스트는 2026-09-09 사용자가 통과를 확인했다. 에이전트 재실행은 없으며 수동 확인은 별도다.
 - 수동 DI는 `app/src/main/java/com/example/attendance/core/di/AppContainer.kt`, Repository 인터페이스와 Fake는 `app/src/main/java/com/example/attendance/core/data/repository/`에 있다.
 - 현재 수동 DI·Kotlin Result·Fake Repository 구조를 기준으로 확장한다. 참고 저장소의 Hilt·AppResult·SessionRepository·`data/repository/` 구조는 후속 참고 구현이며 해당 전환 요청 없이 가져오지 않는다.
-- 기능 디렉터리는 `splash`, `auth`, `home`, `attendance`, `notification`, `history`다. 새 기능은 요청 단계에 맞춰 추가한다.
+- 기능 디렉터리는 `splash`, `auth`, `home`, `attendance`, `notification`, `history`, `mypage`다. feature/navigation은 실제 core/navigation 코드의 학습 문서 위치다. 새 기능은 요청 단계에 맞춰 추가한다.
 - 서버 인증, 실제 NFC 태그 수신 및 서버 검증, 알림 API, 영구 저장은 미연동이다. Fake 지연·샘플 데이터·성공 콜백을 실제 외부 연동으로 설명하지 않는다.
-- Navigation 연결, 마이페이지 등 후속 작업은 가이드와 현재 소스를 확인해서 범위를 정한다. 3-6을 다시 다음 구현 단계로 취급하지 않는다.
+- 진행 순서는 3-7 → 3-8 기본 UI와 UI 테스트 → 3-9 Navigation 선행 → 3-8 연습 과제 재개다. MyPageViewModel, AuthRepository.logout 호출의 ViewModel 이전, MyPageViewModelTest는 사용자 연습 과제로 남겨 임의 구현하지 않는다. 현재 로그아웃은 화면 스택만 정리한다. feature/navigation/README.md와 VALIDATION.md를 먼저 읽는다.
 - 참고 진행 기록에는 HistoryViewModel 단위 테스트 3건의 사용자 통과 확인이 있으나 기능의 VALIDATION.md에는 아직 미실행으로 남아 있다. 이처럼 기록이 다르면 실행 시점과 대상 변경을 확인하며, 이번 체크아웃에서 재실행한 결과로 표현하지 않는다.
 
 ## 5. 실제 코드 주석과 기능별 설명 MD
@@ -132,3 +132,5 @@ adb devices
 - 파일 하나만 수정하라는 요청 등 범위 제한이 있으면 이를 우선한다. 다른 문서의 불일치는 알리고 임의로 수정 범위를 넓히지 않는다.
 - 기능 해설의 원본은 실제 앱의 feature 문서다. 참고 저장소에는 링크와 진행 요약을 두어 전체 해설의 중복 복사본을 만들지 않는다.
 - 최종 응답에는 변경 결과와 파일, 확인한 사항, 미검증 범위, 필요한 사용자 실행 명령을 안내한다. 커밋했다면 해시·메시지와 남은 변경을, 파일만 수정했다면 미커밋 상태를 알린다.
+
+- 테스트 안내는 문서 링크만 제공하지 않고 답변 본문에도 실행 위치와 전체 명령을 한 번에 제시한다. 새 테스트만 실행하는 명령과 전체 회귀 테스트 명령을 구분한다.

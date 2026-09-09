@@ -61,7 +61,7 @@ adb devices
 
 `feature/home/presentation/HomeScreen.kt`의 `HomeContentPreview`를 Android Studio의 Split 또는 Design 모드에서 확인한다. Preview는 샘플 상태만 그리며 ViewModel 수집이나 실제 이동을 검증하지 않는다.
 
-현재 MainActivity는 기존 HomePrototypeScreen을 호출한다. 앱 실행 화면이 새 HomeScreen으로 바뀌었다고 기대하면 안 된다. 이후 Navigation 연결 시 실제 Screen 진입과 이동도 별도로 확인한다.
+3-9에서 MainActivity를 AppNavGraph로 전환했다. 앱 실행 후 스플래시·로그인을 거쳐 실제 HomeScreen으로 진입한다. 연결 검증 절차는 ../navigation/VALIDATION.md를 참고하며 이전 테스트 결과와 구분한다.
 
 ## 결과 기록
 
