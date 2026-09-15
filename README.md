@@ -14,19 +14,20 @@
 
 ## 🖼️ 주요 화면
 
+구현 중.. (09.16 기준 스크린샷)
 | 로그인 | 홈 | 출석 체크 |
 | --- | --- | --- |
-|  |  |  |
+| <img height="500" alt="image" src="https://github.com/user-attachments/assets/4056e73d-8257-4450-8f5e-480d419b38e9" /> | <img height="500" alt="image" src="https://github.com/user-attachments/assets/55f68423-78af-4227-b6ea-fb952abeaa97" /> | <img height="500" alt="image" src="https://github.com/user-attachments/assets/e45058dc-897f-4b1d-8707-7cc2752cf24e" /> |
 | 학번·비밀번호 입력과 로그인 흐름 | 출석 대상 세션·통계·최근 알림 | NFC 스캔을 가정한 처리 화면 |
 
 | 출석 결과 | 알림 | 출석 기록 |
 | --- | --- | --- |
-|  |  |  |
+|  | <img height="500" alt="image" src="https://github.com/user-attachments/assets/9f112615-715b-4032-8659-5c20183cc498" /> | <img height="500" alt="image" src="https://github.com/user-attachments/assets/af1d4227-bb9f-445f-a3d4-94bc3b68ec56" /> |
 | 출석 처리 결과 다이얼로그 | 알림 목록과 읽음 상태 | 월별 달력과 날짜별 기록 |
 
 | 정정 요청 | 마이페이지 | 로그아웃 확인 |
 | --- | --- | --- |
-|  |  |  |
+| <img height="500" alt="image" src="https://github.com/user-attachments/assets/b36a1e83-c345-4efd-8652-2e727346baa7" /> |  |  |
 | 대상 기록 확인과 사유 제출 | 정적 프로필과 계정 메뉴 | 확인 후 로그인 화면으로 이동 |
 
 | 스플래시 |
