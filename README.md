@@ -8,6 +8,8 @@
 
 화면 구현부터 ViewModel 상태 관리, Repository 분리, Navigation 연결과 테스트까지 단계적으로 구현하고 있습니다.
 
+<img width="1707" height="921" alt="image" src="https://github.com/user-attachments/assets/457ebe6f-1811-4287-a21f-8e189f078b33" />
+
 > 🚧 **개발 진행 중입니다.** 현재는 Fake Repository와 샘플 데이터로 동작하며, 서버 인증·실제 NFC 태그 수신·영구 저장은 연결되지 않았습니다. 문서의 구현 범위는 마이페이지 기본 UI와 Navigation 연결까지이며, 마이페이지 ViewModel 연습 과제는 포함하지 않습니다.
 
 <br>
